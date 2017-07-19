@@ -1,4 +1,13 @@
-
+//firebase Config
+var config = {
+    apiKey: "AIzaSyDSbvayl0GDnF6AcIp8lymbCz56tKAnIwg",
+    authDomain: "maps-route-1500324598753.firebaseapp.com",
+    databaseURL: "https://maps-route-1500324598753.firebaseio.com",
+    projectId: "maps-route-1500324598753",
+    storageBucket: "",
+    messagingSenderId: "150903818209"
+};
+firebase.initializeApp(config);
 
 /*Caching API key for Google maps */
 var API_key = "AIzaSyDHoaPyBOHcUQcck0-LEAw6AsVTMt7Wqho";
@@ -19,12 +28,21 @@ function removeWays(i) {
     console.log(waysGeoCodeArr);
 }
 
+var database = firebase.database();
+var ref = database.ref('map_par');
+var data = {
+    WaysGeo: waysGeoCodeArr,
+    StartGeo: startGeoCodeArr,
+    DestGeo: destGeoCodeArr
+};
+
 
 /* add waypoints button click handler */
 wayPtBtn.click(function () {
     var wayInp = $("#wayPtInput").val();
     geoCode(wayInp, 'wayInput');
 });
+
 
 /*Template function for adding way points data in DOM*/
 function addWayPointsToHTML() {
@@ -66,46 +84,6 @@ function geoCode(address, geoCodeFor) {
             }
         }
     });
-
-// function geoCode(address, geoCodeFor) {
-//     axios.get("https://maps.googleapis.com/maps/api/geocode/json", {
-//         params: {
-//             address: address,
-//             key: API_key
-//         }
-//     })
-//         .then(function (response) {
-//             var formattedAddress =  response.data.results[0].formatted_address;     //Formatted Address to the Input
-//             var lat = response.data.results[0].geometry.location.lat;               //Latitude of the input address
-//             var lng = response.data.results[0].geometry.location.lng;               //Longitude of the input address
-//             var newGeoObj = {
-//                 location: formattedAddress,
-//                 stopover: true
-//             };
-//             var newGeoObj1 = {
-//                 location: formattedAddress,
-//                 // stopover: true
-//                 lat: lat,
-//                 lng: lng
-//             };
-//             if(geoCodeFor === "startInput"){
-//                 startGeoCodeArr.lat = newGeoObj1.lat;
-//                 startGeoCodeArr.lng = newGeoObj1.lng;
-//                 startGeoCodeArr.location = newGeoObj1.location;
-//             }
-//             if(geoCodeFor === "destInput"){
-//                 destGeoCodeArr.lat = newGeoObj1.lat;
-//                 destGeoCodeArr.lng = newGeoObj1.lng;
-//                 destGeoCodeArr.location = newGeoObj1.location;
-//             }
-//             if(geoCodeFor === "wayInput"){
-//                 waysGeoCodeArr.push(newGeoObj);
-//                 addWayPointsToHTML();
-//             }
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
 }
 
 
@@ -120,6 +98,7 @@ function initMap() {
         var destInp = $('#destPtInput').val();
         geoCode(startInp, 'startInput');
         geoCode(destInp, 'destInput');
+        ref.push(data);
         calculateAndDisplayRoute(directionsService, directionsDisplay);
         console.log(startGeoCodeArr);
     });
@@ -156,12 +135,10 @@ function initMap() {
                 var route = response.routes[0];
                 for (var i = 0; i < route.legs.length; i++) {
                     var routeSegment = i + 1;
-                    console.log(routeSegment+ ", "+ route.legs[i].start_address+ ", "+ route.legs[i].end_address +", " + route.legs[i].distance.text);
-
                 }
             }
             else {
-                window.alert('Directions request failed due to ' + status);
+                console.log('Directions request failed due to ' + status);
             }
         });
     }
