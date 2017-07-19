@@ -107,22 +107,22 @@ function geoCode(address, geoCodeFor) {
 //             console.log(error);
 //         });
 }
-startingPoint.submit(function (e) {
-    e.preventDefault();
-    var startInp = $('#startPtInput').val();
-    var destInp = $('#destPtInput').val();
-    geoCode(startInp, 'startInput');
-    geoCode(destInp, 'destInput');
-    // calculateAndDisplayRoute(directionsService, directionsDisplay);
-    console.log(startGeoCodeArr);
-});
+
 
 
 /*   Map initialization function  */
 function initMap() {
 
     /*Adding submit event listener */
-
+    startingPoint.submit(function (e) {
+        e.preventDefault();
+        var startInp = $('#startPtInput').val();
+        var destInp = $('#destPtInput').val();
+        geoCode(startInp, 'startInput');
+        geoCode(destInp, 'destInput');
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+        console.log(startGeoCodeArr);
+    });
 
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
