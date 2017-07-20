@@ -5,10 +5,10 @@ var destGeoCodeArr = {};
 
 
 
-    var removeWays = function(i) {
-        waysGeoCodeArr.splice(i,1);
-        $('#'+ i).remove();
-    };
+var removeWays = function(i) {
+    waysGeoCodeArr.splice(i,1);
+    $('#'+ i).remove();
+};
 
 
 /*   Map initialization function  */
@@ -46,7 +46,7 @@ function initMap() {
 
 
     ref.on('value', gotData, errData);
-    
+
     function gotData(fireData) {
         // console.log(fireData.val());
         var Data = fireData.val();
@@ -60,12 +60,12 @@ function initMap() {
             // console.log(WaysGeo);
 
             // $('#data_list').after('Start: '+ StartGeo.location +', Destination: '+DestGeo.location + ', WayPoints: '+ (WaysGeo[0].location == "undefined"? WaysGeo[0].location:""));
-        if(WaysGeo){
-            $('#data_list').after(`<a href="#" onclick="MyWindow = window.open('map.html?startGeoLat=${encodeURIComponent(StartGeo.lat)}&startGeoLng=${encodeURIComponent(StartGeo.lng)}&startGeoLoc=${StartGeo.location}&destGeoLat=${encodeURIComponent(DestGeo.lat)}&destGeoLng=${encodeURIComponent(DestGeo.lng)}&destGeoLoc=${encodeURIComponent(DestGeo.location)}&waysGeoLoc=${encodeURIComponent(WaysGeo.map(entry=>entry.location).join("."))}','MyWindow', width= 600, height=300)" class="rem-link"><li class="lis panel panel-info"><b>Start: </b>${StartGeo.location}<br> <b>Destination: </b>${DestGeo.location} <br><b>WayPoints: </b><br>${WaysGeo.map(entry=>entry.location).join(", <br>")}</li></a>`);
-        }
-        else{
-            $('#data_list').after(`<a href="#" onclick="MyWindow = window.open('map.html?startGeoLat=${encodeURIComponent(StartGeo.lat)}&startGeoLng=${encodeURIComponent(StartGeo.lng)}&startGeoLoc=${StartGeo.location}&destGeoLat=${encodeURIComponent(DestGeo.lat)}&destGeoLng=${encodeURIComponent(DestGeo.lng)}&destGeoLoc=${encodeURIComponent(DestGeo.location)}','MyWindow',width=600, height= 300)" class="rem-link"><li class="lis panel panel-info"><b>Start: </b>${StartGeo.location} <br><b>Destination: </b>${DestGeo.location}</a>`);
-        }
+            if(WaysGeo){
+                $('#data_list').after(`<a href="#" onclick="MyWindow = window.open('map.html?startGeoLat=${encodeURIComponent(StartGeo.lat)}&startGeoLng=${encodeURIComponent(StartGeo.lng)}&startGeoLoc=${StartGeo.location}&destGeoLat=${encodeURIComponent(DestGeo.lat)}&destGeoLng=${encodeURIComponent(DestGeo.lng)}&destGeoLoc=${encodeURIComponent(DestGeo.location)}&waysGeoLoc=${encodeURIComponent(WaysGeo.map(entry=>entry.location).join("."))}','MyWindow', width= 600, height=300)" class="rem-link"><li class="lis panel panel-info"><b>Start: </b>${StartGeo.location}<br> <b>Destination: </b>${DestGeo.location} <br><b>WayPoints: </b><br>${WaysGeo.map(entry=>entry.location).join(", <br>")}</li></a>`);
+            }
+            else{
+                $('#data_list').after(`<a href="#" onclick="MyWindow = window.open('map.html?startGeoLat=${encodeURIComponent(StartGeo.lat)}&startGeoLng=${encodeURIComponent(StartGeo.lng)}&startGeoLoc=${StartGeo.location}&destGeoLat=${encodeURIComponent(DestGeo.lat)}&destGeoLng=${encodeURIComponent(DestGeo.lng)}&destGeoLoc=${encodeURIComponent(DestGeo.location)}','MyWindow',width=600, height= 300)" class="rem-link"><li class="lis panel panel-info"><b>Start: </b>${StartGeo.location} <br><b>Destination: </b>${DestGeo.location}</a>`);
+            }
         }
     }
 
@@ -90,7 +90,7 @@ function initMap() {
         setTimeout(function () {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
             ref.push(data);
-        },1000);
+        },800);
 
         console.log(startGeoCodeArr);
         console.log(destGeoCodeArr);
